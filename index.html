@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TwinMind - Live Suggestions</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo">
+      <span class="logo-icon">🧠</span>
+      <span class="logo-text">TwinMind</span>
+      <span class="logo-subtitle">Live Suggestions</span>
+    </div>
+    <div class="top-actions">
+      <button id="exportBtn" class="top-btn export-btn">
+        <span class="btn-icon">📤</span>
+        <span>Export</span>
+      </button>
+      <button id="settingsBtn" class="top-btn settings-btn">
+        <span class="btn-icon">⚙️</span>
+        <span>Settings</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main App Container -->
+  <div class="app-container">
+    
+    <!-- LEFT COLUMN: Mic + Transcript -->
+    <div class="column left-column">
+      <div class="column-header">
+        <div class="header-title">
+          <span class="header-icon">🎙️</span>
+          <h3>Transcript</h3>
+        </div>
+        <button id="micBtn" class="mic-btn">
+          <span class="mic-indicator"></span>
+          <span class="btn-text">Start</span>
+        </button>
+      </div>
+      
+      <div class="info-box">
+        <p>The transcript scrolls and appends new chunks every ~30 seconds while recording. Use the mic button to start/stop. Include an export button (not shown) so we can pull the full session.</p>
+      </div>
+      
+      <div id="transcript" class="transcript-box">
+        <p class="placeholder-text">No transcript yet — start the mic.</p>
+      </div>
+    </div>
+
+    <!-- MIDDLE COLUMN: Live Suggestions -->
+    <div class="column middle-column">
+      <div class="column-header">
+        <div class="header-title">
+          <span class="header-icon">💡</span>
+          <h3>Live Suggestions</h3>
+        </div>
+        <div class="header-actions">
+          <span class="batch-count" id="batchCount">0 BATCHES</span>
+          <button id="refreshBtn" class="refresh-btn">
+            <span class="btn-icon">🔄</span>
+            <span>Reload suggestions</span>
+          </button>
+        </div>
+      </div>
+      
+      <div class="info-box">
+        <p>On reload (or auto every ~30s), generate <strong>3 fresh suggestions</strong> from recent transcript context. New batch appears at the top; older batches push down (faded). Each is a tappable card: a <span class="highlight-question">question to ask</span>, a <span class="highlight-talking">talking point</span>, an <span class="highlight-answer">answer</span>, or a <span class="highlight-fact">fact-check</span>. The preview alone should already be useful.</p>
+      </div>
+      
+      <div id="suggestions" class="suggestions-box">
+        <p class="placeholder-text">Suggestions appear here once recording starts.</p>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: Chat -->
+    <div class="column right-column">
+      <div class="column-header">
+        <div class="header-title">
+          <span class="header-icon">💬</span>
+          <h3>Chat (Detailed Answers)</h3>
+        </div>
+        <span class="session-badge">SESSION-ONLY</span>
+      </div>
+      
+      <div class="info-box">
+        <p>Clicking a suggestion adds it to this chat and streams a detailed answer (separate prompt, more context). User can also type questions directly. One continuous chat per session — no login, no persistence.</p>
+      </div>
+      
+      <div id="chat" class="chat-box">
+        <p class="placeholder-text">Click a suggestion or type a question below.</p>
+      </div>
+      
+      <div class="chat-input-area">
+        <input type="text" id="chatInput" placeholder="Ask anything..." />
+        <button id="sendBtn" class="send-btn">Send</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="modal-icon">⚙️</span>
+          <h2>Settings</h2>
+        </div>
+        <button id="closeSettings" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="apiKeyInput">
+            <strong>Groq API Key</strong>
+            <small>Paste your gsk_... key here</small>
+          </label>
+          <input type="password" id="apiKeyInput" placeholder="gsk_..." />
+        </div>
+        
+        <div class="form-group">
+          <label for="suggestionPromptInput">
+            <strong>Suggestion Prompt</strong>
+            <small>Instructions for generating live suggestions</small>
+          </label>
+          <textarea id="suggestionPromptInput" rows="5"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="chatPromptInput">
+            <strong>Chat Prompt</strong>
+            <small>Instructions for detailed answers</small>
+          </label>
+          <textarea id="chatPromptInput" rows="5"></textarea>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="suggestionContextInput">
+              <strong>Context Window (suggestions)</strong>
+              <small>Characters from transcript</small>
+            </label>
+            <input type="number" id="suggestionContextInput" value="500" />
+          </div>
+          
+          <div class="form-group">
+            <label for="chatContextInput">
+              <strong>Context Window (chat)</strong>
+              <small>Characters from transcript</small>
+            </label>
+            <input type="number" id="chatContextInput" value="2000" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="saveSettings" class="save-btn">
+          <span class="btn-icon">💾</span>
+          <span>Save Settings</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
