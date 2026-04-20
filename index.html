@@ -29,7 +29,7 @@
 
   <!-- Main App Container -->
   <div class="app-container">
-    
+   
     <!-- LEFT COLUMN: Mic + Transcript -->
     <div class="column left-column">
       <div class="column-header">
@@ -42,11 +42,12 @@
           <span class="btn-text">Start</span>
         </button>
       </div>
-      
+     
+      <!-- INFO BOX -->
       <div class="info-box">
-        <p>The transcript scrolls and appends new chunks every ~30 seconds while recording. Use the mic button to start/stop. Include an export button (not shown) so we can pull the full session.</p>
+        <p>Live transcript of your conversation appear here, updated every ~30 seconds while recording. Use Start/Stop to control recording. Export the full session anytime.</p>
       </div>
-      
+     
       <div id="transcript" class="transcript-box">
         <p class="placeholder-text">No transcript yet — start the mic.</p>
       </div>
@@ -67,11 +68,11 @@
           </button>
         </div>
       </div>
-      
+     
       <div class="info-box">
-        <p>On reload (or auto every ~30s), generate <strong>3 fresh suggestions</strong> from recent transcript context. New batch appears at the top; older batches push down (faded). Each is a tappable card: a <span class="highlight-question">question to ask</span>, a <span class="highlight-talking">talking point</span>, an <span class="highlight-answer">answer</span>, or a <span class="highlight-fact">fact-check</span>. The preview alone should already be useful.</p>
+        <p>AI-generated suggestions based on your conversation appear here, refreshed every ~30 seconds. Each batch includes 3 items such as questions, talking points, answers, or fact-checks, often in combination. New suggestions appear at the top. Click any to explore further.</p>
       </div>
-      
+     
       <div id="suggestions" class="suggestions-box">
         <p class="placeholder-text">Suggestions appear here once recording starts.</p>
       </div>
@@ -86,15 +87,15 @@
         </div>
         <span class="session-badge">SESSION-ONLY</span>
       </div>
-      
+     
       <div class="info-box">
-        <p>Clicking a suggestion adds it to this chat and streams a detailed answer (separate prompt, more context). User can also type questions directly. One continuous chat per session — no login, no persistence.</p>
+        <p>Detailed responses appear here. Click a suggestion to expand it with full context, or type your own questions. The chat maintains context throughout your session for easy follow-ups.</p>
       </div>
-      
+     
       <div id="chat" class="chat-box">
         <p class="placeholder-text">Click a suggestion or type a question below.</p>
       </div>
-      
+     
       <div class="chat-input-area">
         <input type="text" id="chatInput" placeholder="Ask anything..." />
         <button id="sendBtn" class="send-btn">Send</button>
@@ -122,7 +123,7 @@
           </label>
           <input type="password" id="apiKeyInput" placeholder="gsk_..." />
         </div>
-        
+       
         <div class="form-group">
           <label for="suggestionPromptInput">
             <strong>Suggestion Prompt</strong>
@@ -130,7 +131,7 @@
           </label>
           <textarea id="suggestionPromptInput" rows="5"></textarea>
         </div>
-        
+       
         <div class="form-group">
           <label for="chatPromptInput">
             <strong>Chat Prompt</strong>
@@ -138,7 +139,7 @@
           </label>
           <textarea id="chatPromptInput" rows="5"></textarea>
         </div>
-        
+       
         <div class="form-row">
           <div class="form-group">
             <label for="suggestionContextInput">
@@ -147,7 +148,7 @@
             </label>
             <input type="number" id="suggestionContextInput" value="500" />
           </div>
-          
+         
           <div class="form-group">
             <label for="chatContextInput">
               <strong>Context Window (chat)</strong>
