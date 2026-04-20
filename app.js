@@ -1,5 +1,6 @@
 // ==========================================
-// TWINMIND APP - Complete Logic
+// TWINMIND APP 
+// Assignment: Live Suggestions with Groq
 // Models: whisper-large-v3 (transcription), openai/gpt-oss-120b (suggestions/chat)
 // ==========================================
 
@@ -7,28 +8,34 @@
 const CONFIG = {
   groqBaseUrl: "https://api.groq.com/openai/v1",
   whisperModel: "whisper-large-v3",
-  chatModel: "openai/gpt-oss-120b" // Exact model ID from Groq Playground
+  chatModel: "openai/gpt-oss-120b" 
 };
 
 // --- PROMPTS ---
-// Optimized for strict JSON output to prevent parsing errors
-const DEFAULT_SUGGESTION_PROMPT = `You are TwinMind, an expert AI meeting copilot. Analyze the live conversation and generate EXACTLY 3 actionable, context-aware suggestions.
+// This prompt includes a concrete example to force valid JSON output
+const DEFAULT_SUGGESTION_PROMPT = `You are TwinMind, an expert AI meeting copilot. Your job is to generate exactly 3 useful suggestions based on the conversation.
 
-Allowed types: QUESTION, TALKING_POINT, FACT_CHECK, ANSWER, CLARIFICATION.
+Analyze the speaker's intent and provide the right mix of:
+- QUESTION (to ask the speaker)
+- ANSWER (to a question the speaker asked)
+- FACT_CHECK (verification of a statement)
+- TALKING_POINT (a key point to mention)
+- CLARIFICATION (if something is unclear)
 
-Output Format:
-Return ONLY a valid JSON array. No markdown, no explanations, no extra text.
-Format:
+CRITICAL: You must output ONLY a valid JSON array. No text before or after the array.
+
+EXAMPLE OUTPUT:
 [
-  {"type": "QUESTION", "content": "Concise question here"},
-  {"type": "TALKING_POINT", "content": "Key point to raise"},
-  {"type": "FACT_CHECK", "content": "Verification or correction"}
+  {"type": "QUESTION", "content": "When is the deadline for this project?"},
+  {"type": "FACT_CHECK", "content": "Actually, Q3 revenue increased by 15%, not decreased."},
+  {"type": "TALKING_POINT", "content": "We should also discuss the marketing budget."}
 ]
 
 Rules:
-- Keep content under 15 words per suggestion.
-- Base on immediate context.
-- Avoid repetition.`;
+- Exactly 3 suggestions.
+- Keep content under 15 words.
+- Use the types above.
+- Return ONLY the JSON.`;
 
 const DEFAULT_CHAT_PROMPT = `You are TwinMind's detailed answer engine. The user clicked a suggestion or asked a question during a live conversation.
 
@@ -40,9 +47,9 @@ let state = {
   isRecording: false,
   mediaRecorder: null,
   audioChunks: [],
-  transcript: [],        // [{time, text}]
-  chatHistory: [],       // [{role, content}]
-  suggestionBatches: [], // [{timestamp, suggestions}] - For Export
+  transcript: [],
+  chatHistory: [],
+  suggestionBatches: [],
   refreshInterval: null,
   suggestionPrompt: DEFAULT_SUGGESTION_PROMPT,
   chatPrompt: DEFAULT_CHAT_PROMPT,
@@ -76,22 +83,19 @@ const els = {
 // INITIALIZATION
 // ==========================================
 function init() {
-  // Load saved API key
   const savedKey = localStorage.getItem('twinmind_api_key');
   if (savedKey) {
     state.apiKey = savedKey;
     els.apiKeyInput.value = savedKey;
   } else {
-    toggleSettings(true); // Prompt for key on first run
+    toggleSettings(true);
   }
 
-  // Pre-fill settings with defaults
   els.suggestionPromptInput.value = state.suggestionPrompt;
   els.chatPromptInput.value = state.chatPrompt;
   els.suggestionContextInput.value = state.suggestionContextChars;
   els.chatContextInput.value = state.chatContextChars;
 
-  // Event listeners
   els.micBtn.addEventListener('click', toggleMic);
   els.refreshBtn.addEventListener('click', manualRefresh);
   els.sendBtn.addEventListener('click', sendChatMessage);
@@ -103,7 +107,7 @@ function init() {
 }
 
 // ==========================================
-// MICROPHONE & AUDIO (30s Chunking)
+// MICROPHONE & AUDIO
 // ==========================================
 async function toggleMic() {
   if (!state.apiKey) {
@@ -121,8 +125,7 @@ async function startRecording() {
     state.audioChunks = [];
 
     state.mediaRecorder.ondataavailable = (e) => state.audioChunks.push(e.data);
-    
-    // When recording stops (every 30s), process the chunk
+   
     state.mediaRecorder.onstop = async () => {
       const blob = new Blob(state.audioChunks, { type: 'audio/webm' });
       await processAudioChunk(blob);
@@ -130,9 +133,8 @@ async function startRecording() {
 
     state.mediaRecorder.start();
     state.isRecording = true;
-    updateMicUI(true);
+    updateMicUI(true); // This now updates the "Listening..." text
 
-    // Auto-chunk every 30 seconds (stop -> process -> restart)
     state.refreshInterval = setInterval(() => {
       if (state.isRecording && state.mediaRecorder.state === 'recording') {
         state.mediaRecorder.stop();
@@ -141,7 +143,7 @@ async function startRecording() {
 
   } catch (err) {
     console.error("Mic error:", err);
-    alert("Microphone access denied. Please allow permissions.");
+    alert("Microphone access denied.");
   }
 }
 
@@ -149,16 +151,31 @@ function stopRecording() {
   if (state.mediaRecorder?.state === 'recording') state.mediaRecorder.stop();
   clearInterval(state.refreshInterval);
   state.isRecording = false;
-  updateMicUI(false);
+  updateMicUI(false); // This now updates the "Paused" text
 }
 
+// UPDATED FUNCTION: Changes text based on recording state
 function updateMicUI(isRec) {
   els.micBtn.querySelector('.btn-text').textContent = isRec ? "Stop" : "Start";
   els.micBtn.classList.toggle('recording', isRec);
+  
+  // Update transcript placeholder based on recording state
+  const placeholder = els.transcriptBox.querySelector('.placeholder-text');
+  if (placeholder) {
+    if (isRec) {
+      placeholder.textContent = "Listening... speak now.";
+      placeholder.style.color = "var(--accent-primary)"; // Blue color
+      placeholder.style.fontStyle = "normal"; // Remove italics
+    } else {
+      placeholder.textContent = "Recording paused. Start to continue.";
+      placeholder.style.color = "var(--text-muted)"; // Grey color
+      placeholder.style.fontStyle = "italic"; // Add italics
+    }
+  }
 }
 
 // ==========================================
-// GROQ API: TRANSCRIPTION (Whisper)
+// GROQ API: TRANSCRIPTION
 // ==========================================
 async function processAudioChunk(blob) {
   if (!blob.size) return;
@@ -175,19 +192,15 @@ async function processAudioChunk(blob) {
     });
 
     if (!res.ok) throw new Error(`Transcription ${res.status}: ${await res.text()}`);
-    
+   
     const data = await res.json();
     const newText = data.text?.trim();
-    
+   
     if (newText) {
-      // 1. Add to transcript
       addTranscriptLine(newText);
-      
-      // 2. Generate suggestions based on the new text
       setTimeout(() => generateSuggestions(newText), 100);
     }
 
-    // 3. Restart recording if still active
     if (state.isRecording) {
       state.audioChunks = [];
       state.mediaRecorder.start();
@@ -198,10 +211,9 @@ async function processAudioChunk(blob) {
 }
 
 // ==========================================
-// GROQ API: GENERATE SUGGESTIONS (Fixed Parsing)
+// GROQ API: GENERATE SUGGESTIONS
 // ==========================================
 async function generateSuggestions(newChunk) {
-  // Build context window
   const fullText = state.transcript.map(t => t.text).join(" ");
   const context = fullText.slice(-state.suggestionContextChars);
   const prompt = `${state.suggestionPrompt}\n\nRecent Context:\n${context}\n\nNew Input:\n${newChunk}`;
@@ -216,43 +228,45 @@ async function generateSuggestions(newChunk) {
       body: JSON.stringify({
         model: CONFIG.chatModel,
         messages: [
-          { role: 'system', content: "Output ONLY valid JSON array. No markdown, no code blocks, no explanations." },
+          { role: 'system', content: "You are a JSON-only generator. Output ONLY a raw JSON array. No markdown, no explanations." },
           { role: 'user', content: prompt }
         ],
         temperature: 0.6,
         max_completion_tokens: 500,
-        reasoning_effort: "medium" // Required for gpt-oss-120b
+        reasoning_effort: "medium"
       })
     });
 
     if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
-    
+   
     const data = await res.json();
     let raw = data.choices[0]?.message?.content || "";
-    
+   
     console.log("Raw AI Response:", raw);
 
-    // --- ROBUST PARSING FOR REASONING MODELS ---
-    // 1. Remove <think> tags (reasoning model quirk)
+    // --- ROBUST PARSING ---
+    // 1. Remove <think> tags
     let clean = raw.replace(/<think>[\s\S]*?<\/think>/gi, '');
-    
-    // 2. Remove markdown code blocks
+   
+    // 2. Remove markdown blocks
     clean = clean.replace(/```json|```/g, '').trim();
-    
-    // 3. Extract JSON array using regex (finds first [ and last ])
+   
+    // 3. Try to find the JSON array
     const match = clean.match(/\[[\s\S]*\]/);
-    
-    if (!match) throw new Error("No JSON array found in response");
-    
+   
+    if (!match) {
+      console.error("Failed to find JSON in:", clean);
+      throw new Error("No JSON array found in response. Check console for raw output.");
+    }
+   
     const suggestions = JSON.parse(match[0]);
     if (!Array.isArray(suggestions) || suggestions.length === 0) throw new Error("Invalid suggestion format");
-    
-    // Add to UI and State (for export)
+   
     addSuggestionsBatch(suggestions);
-    
+   
   } catch (err) {
     console.error("Suggestion error:", err);
-    els.suggestionsBox.innerHTML = `<p style="color:#ff6b6b;padding:15px;">⚠️ ${err.message}<br><small>Check console (F12) for details</small></p>`;
+    els.suggestionsBox.innerHTML = `<p style="color:#ff6b6b;padding:15px;">⚠️ ${err.message}</p>`;
   }
 }
 
@@ -263,10 +277,9 @@ async function sendChatToAI(userMsg) {
   addChatMessage('user', userMsg);
   els.chatInput.value = '';
 
-  // Build context
   const fullContext = state.transcript.map(t => t.text).join("\n").slice(-state.chatContextChars);
   const sysPrompt = `${state.chatPrompt}\n\nConversation Context:\n${fullContext}`;
-  
+ 
   const messages = [
     { role: 'system', content: sysPrompt },
     ...state.chatHistory,
@@ -292,10 +305,10 @@ async function sendChatToAI(userMsg) {
     });
 
     if (!res.ok) throw new Error(`Chat ${res.status}: ${await res.text()}`);
-    
+   
     const data = await res.json();
     const reply = data.choices[0]?.message?.content || "No response received.";
-    
+   
     removeChatMessage(loadId);
     addChatMessage('assistant', reply);
   } catch (err) {
@@ -311,14 +324,15 @@ async function sendChatToAI(userMsg) {
 function addTranscriptLine(text) {
   const time = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit', second:'2-digit' });
   state.transcript.push({ time, text });
-  
+ 
   const div = document.createElement('div');
   div.className = 'transcript-line';
   div.innerHTML = `<span class="transcript-time">${time}</span> ${text}`;
-  
+ 
   els.transcriptBox.appendChild(div);
   els.transcriptBox.scrollTop = els.transcriptBox.scrollHeight;
-  
+ 
+  // Remove placeholder when first transcript appears
   const placeholder = els.transcriptBox.querySelector('.placeholder-text');
   if (placeholder) placeholder.remove();
 }
@@ -326,37 +340,35 @@ function addTranscriptLine(text) {
 function addSuggestionsBatch(items) {
   const batch = document.createElement('div');
   batch.className = 'suggestion-batch';
-  
-  // Remove placeholder
+ 
   const ph = els.suggestionsBox.querySelector('.placeholder-text');
   if (ph) ph.remove();
 
   items.forEach(item => {
     const card = document.createElement('div');
     card.className = 'suggestion-card';
-    
+   
     const type = (item.type || 'SUGGESTION').toUpperCase();
-    const cls = type.includes('QUESTION') ? 'tag-question' : 
-                type.includes('TALKING') ? 'tag-talking-point' : 
+    const cls = type.includes('QUESTION') ? 'tag-question' :
+                type.includes('TALKING') ? 'tag-talking-point' :
                 type.includes('FACT') ? 'tag-fact-check' : 'tag-answer';
-    
+   
     card.innerHTML = `
       <span class="suggestion-tag ${cls}">${type.replace('_', ' ')}</span>
       <div class="suggestion-text">${item.content}</div>
     `;
-    
+   
     card.addEventListener('click', () => sendChatToAI(`Expand on: "${item.content}"`));
     batch.prepend(card);
   });
-  
+ 
   els.suggestionsBox.prepend(batch);
-  
-  // Save to state for export
-  state.suggestionBatches.push({ 
-    timestamp: new Date().toISOString(), 
-    items: items 
+ 
+  state.suggestionBatches.push({
+    timestamp: new Date().toISOString(),
+    items: items
   });
-  
+ 
   updateBatchCount();
 }
 
@@ -370,13 +382,13 @@ function addChatMessage(role, text, loading=false) {
   const div = document.createElement('div');
   div.id = `msg-${id}`;
   div.className = `chat-message ${role}`;
-  
+ 
   const label = role === 'user' ? 'YOU' : (loading ? 'ASSISTANT (Typing...)' : 'ASSISTANT');
   div.innerHTML = `<span class="chat-label">${label}</span><div>${text}</div>`;
-  
+ 
   els.chatBox.appendChild(div);
   els.chatBox.scrollTop = els.chatBox.scrollHeight;
-  
+ 
   if (!loading) state.chatHistory.push({ role, content: text });
   return id;
 }
@@ -410,7 +422,7 @@ function saveSettingsHandler() {
   state.chatPrompt = els.chatPromptInput.value || DEFAULT_CHAT_PROMPT;
   state.suggestionContextChars = parseInt(els.suggestionContextInput.value) || 500;
   state.chatContextChars = parseInt(els.chatContextInput.value) || 2000;
-  
+ 
   toggleSettings(false);
   alert("✅ Settings saved!");
 }
@@ -419,7 +431,7 @@ function exportSession() {
   const data = {
     exportedAt: new Date().toISOString(),
     transcript: state.transcript,
-    suggestionBatches: state.suggestionBatches, // Now correctly included
+    suggestionBatches: state.suggestionBatches,
     chatHistory: state.chatHistory
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -435,7 +447,4 @@ function sendChatMessage() {
   if (txt) sendChatToAI(txt);
 }
 
-// ==========================================
-// START APP
-// ==========================================
 init();
