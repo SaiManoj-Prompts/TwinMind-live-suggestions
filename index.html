@@ -107,8 +107,6 @@
           </button>
           <span class="auto-refresh-label">auto-refresh in <span id="refreshCountdown">30</span>s</span>
         </div>
-
-        <!-- UPDATED info panel text with colored type labels -->
         <div class="info-panel">
           AI-generated suggestions based on your conversation appear here, refreshed every ~30 seconds.
           Each batch includes 3 items such as
@@ -118,7 +116,6 @@
           <span class="il-tag f">fact-checks</span>,
           often in combination. New suggestions appear at the top. Click any to explore further.
         </div>
-
         <div id="suggestions" class="scroll-area suggestions-scroll" role="feed" aria-label="Live suggestions">
           <p class="placeholder-text italic">Suggestions appear here once recording starts.</p>
         </div>
@@ -135,13 +132,15 @@
         <span class="col-badge session">SESSION-ONLY</span>
       </div>
       <div class="col-body chat-col-body">
-        <p class="chat-intro">
-          Detailed responses appear here. Click a suggestion to expand it with full context, or type
-          your own questions. The chat maintains context throughout your session for easy follow-ups.
-        </p>
+        <!-- UPDATED: Wrapped in info-panel for the box outline -->
+        <div class="info-panel">
+          Detailed responses appear here. Click a suggestion to expand it with full context, or type your own questions. The chat maintains context throughout your session for easy follow-ups.
+        </div>
+        
         <div id="chat" class="scroll-area chat-area" role="log" aria-live="polite" aria-label="Chat history">
           <p class="placeholder-text italic centered">Click a suggestion or type a question below.</p>
         </div>
+        
         <div class="chat-input-bar">
           <input type="text" id="chatInput" placeholder="Ask anything..." autocomplete="off" aria-label="Chat input"/>
           <button id="sendBtn" class="send-btn">Send</button>
