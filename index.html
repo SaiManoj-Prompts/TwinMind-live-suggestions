@@ -1,167 +1,202 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TwinMind - Live Suggestions</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>TwinMind — Live Suggestions</title>
+  <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Top Bar -->
-  <div class="top-bar">
-    <div class="logo">
-      <span class="logo-icon">🧠</span>
-      <span class="logo-text">TwinMind</span>
-      <span class="logo-subtitle">Live Suggestions</span>
-    </div>
-    <div class="top-actions">
-      <button id="exportBtn" class="top-btn export-btn">
-        <span class="btn-icon">📤</span>
-        <span>Export</span>
-      </button>
-      <button id="settingsBtn" class="top-btn settings-btn">
-        <span class="btn-icon">⚙️</span>
-        <span>Settings</span>
-      </button>
-    </div>
-  </div>
 
-  <!-- Main App Container -->
-  <div class="app-container">
-   
-    <!-- LEFT COLUMN: Mic + Transcript -->
-    <div class="column left-column">
-      <div class="column-header">
-        <div class="header-title">
-          <span class="header-icon">🎙️</span>
-          <h3>Transcript</h3>
-        </div>
-        <button id="micBtn" class="mic-btn">
-          <span class="mic-indicator"></span>
-          <span class="btn-text">Start</span>
+  <!-- TOP BAR -->
+  <header class="top-bar">
+    <div class="top-bar-left">
+      <span class="app-logo">
+        <span class="tm-t">T</span><span class="tm-w">w</span><span class="tm-i">i</span><span class="tm-n">n</span><span class="tm-m">M</span><span class="tm-i">i</span><span class="tm-n">n</span><span class="tm-d">d</span>
+        <span class="logo-dash"> — </span>
+        <span class="app-logo-sub">Live Suggestions Web App (Reference Mockup)</span>
+      </span>
+    </div>
+
+    <div class="top-bar-right">
+      <div class="theme-toggle-group">
+        <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+          <svg class="sun-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="moon-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+        <button class="icon-btn" id="settingsBtn" title="Settings" aria-label="Open settings">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+          </svg>
         </button>
       </div>
-     
-      <!-- INFO BOX -->
-      <div class="info-box">
-        <p>Live transcript of your conversation appear here, updated every ~30 seconds while recording. Use Start/Stop to control recording. Export the full session anytime.</p>
-      </div>
-     
-      <div id="transcript" class="transcript-box">
-        <p class="placeholder-text">No transcript yet — start the mic.</p>
-      </div>
-    </div>
 
-    <!-- MIDDLE COLUMN: Live Suggestions -->
-    <div class="column middle-column">
-      <div class="column-header">
-        <div class="header-title">
-          <span class="header-icon">💡</span>
-          <h3>Live Suggestions</h3>
+      <button id="exportBtn" class="top-action-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Export
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN 3-COLUMN GRID -->
+  <main class="app-grid">
+
+    <!-- COLUMN 1: MIC & TRANSCRIPT -->
+    <section class="col" id="col-transcript">
+      <div class="col-header">
+        <div class="col-header-left">
+          <span class="col-num">1.</span>
+          <span class="col-title">MIC &amp; TRANSCRIPT</span>
         </div>
-        <div class="header-actions">
-          <span class="batch-count" id="batchCount">0 BATCHES</span>
-          <button id="refreshBtn" class="refresh-btn">
-            <span class="btn-icon">🔄</span>
-            <span>Reload suggestions</span>
+        <span class="col-badge" id="micStatus">IDLE</span>
+      </div>
+      <div class="col-body">
+        <div class="mic-zone">
+          <button id="micBtn" class="mic-circle" aria-label="Toggle microphone recording">
+            <span class="mic-dot"></span>
           </button>
+          <p class="mic-hint">Click mic to start. Transcript<br>appends every ~30s.</p>
+        </div>
+        <div class="info-panel">
+          Live transcript of your conversation appear here, updated every ~30 seconds while
+          recording. Use Start/Stop or <kbd>Space</kbd> to control recording. Export the full session anytime.
+        </div>
+        <div id="transcript" class="scroll-area" role="log" aria-live="polite" aria-label="Live transcript">
+          <p class="placeholder-transcript" id="transcriptPlaceholder">
+            <span class="ph-idle">No transcript yet — start the mic.</span>
+            <span class="ph-listening">
+              <span class="l-dot"></span><span class="l-dot"></span><span class="l-dot"></span>
+              Listening...
+            </span>
+          </p>
         </div>
       </div>
-     
-      <div class="info-box">
-        <p>AI-generated suggestions based on your conversation appear here, refreshed every ~30 seconds. Each batch includes 3 items such as questions, talking points, answers, or fact-checks, often in combination. New suggestions appear at the top. Click any to explore further.</p>
-      </div>
-     
-      <div id="suggestions" class="suggestions-box">
-        <p class="placeholder-text">Suggestions appear here once recording starts.</p>
-      </div>
-    </div>
+    </section>
 
-    <!-- RIGHT COLUMN: Chat -->
-    <div class="column right-column">
-      <div class="column-header">
-        <div class="header-title">
-          <span class="header-icon">💬</span>
-          <h3>Chat (Detailed Answers)</h3>
+    <!-- COLUMN 2: LIVE SUGGESTIONS -->
+    <section class="col" id="col-suggestions">
+      <div class="col-header">
+        <div class="col-header-left">
+          <span class="col-num">2.</span>
+          <span class="col-title">LIVE SUGGESTIONS</span>
         </div>
-        <span class="session-badge">SESSION-ONLY</span>
+        <span class="col-badge" id="batchCount">0 BATCHES</span>
       </div>
-     
-      <div class="info-box">
-        <p>Detailed responses appear here. Click a suggestion to expand it with full context, or type your own questions. The chat maintains context throughout your session for easy follow-ups.</p>
-      </div>
-     
-      <div id="chat" class="chat-box">
-        <p class="placeholder-text">Click a suggestion or type a question below.</p>
-      </div>
-     
-      <div class="chat-input-area">
-        <input type="text" id="chatInput" placeholder="Ask anything..." />
-        <button id="sendBtn" class="send-btn">Send</button>
-      </div>
-    </div>
+      <div class="col-body">
+        <div class="suggestions-toolbar">
+          <button id="refreshBtn" class="reload-btn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="1 4 1 10 7 10"/>
+              <path d="M3.51 15a9 9 0 102.13-9.36L1 10"/>
+            </svg>
+            Reload suggestions
+          </button>
+          <span class="auto-refresh-label">auto-refresh in <span id="refreshCountdown">30</span>s</span>
+        </div>
 
-  </div>
+        <!-- UPDATED info panel text with colored type labels -->
+        <div class="info-panel">
+          AI-generated suggestions based on your conversation appear here, refreshed every ~30 seconds.
+          Each batch includes 3 items such as
+          <span class="il-tag q">questions</span>,
+          <span class="il-tag t">talking points</span>,
+          <span class="il-tag a">answers</span>, or
+          <span class="il-tag f">fact-checks</span>,
+          often in combination. New suggestions appear at the top. Click any to explore further.
+        </div>
 
-  <!-- Settings Modal -->
-  <div id="settingsModal" class="modal hidden">
+        <div id="suggestions" class="scroll-area suggestions-scroll" role="feed" aria-label="Live suggestions">
+          <p class="placeholder-text italic">Suggestions appear here once recording starts.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLUMN 3: CHAT -->
+    <section class="col" id="col-chat">
+      <div class="col-header">
+        <div class="col-header-left">
+          <span class="col-num">3.</span>
+          <span class="col-title">CHAT (DETAILED ANSWERS)</span>
+        </div>
+        <span class="col-badge session">SESSION-ONLY</span>
+      </div>
+      <div class="col-body chat-col-body">
+        <p class="chat-intro">
+          Detailed responses appear here. Click a suggestion to expand it with full context, or type
+          your own questions. The chat maintains context throughout your session for easy follow-ups.
+        </p>
+        <div id="chat" class="scroll-area chat-area" role="log" aria-live="polite" aria-label="Chat history">
+          <p class="placeholder-text italic centered">Click a suggestion or type a question below.</p>
+        </div>
+        <div class="chat-input-bar">
+          <input type="text" id="chatInput" placeholder="Ask anything..." autocomplete="off" aria-label="Chat input"/>
+          <button id="sendBtn" class="send-btn">Send</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SETTINGS MODAL -->
+  <div id="settingsModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Settings">
     <div class="modal-overlay"></div>
     <div class="modal-content">
       <div class="modal-header">
-        <div class="modal-title">
-          <span class="modal-icon">⚙️</span>
+        <div class="modal-title-row">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+          </svg>
           <h2>Settings</h2>
         </div>
-        <button id="closeSettings" class="close-btn">&times;</button>
+        <button id="closeSettings" class="close-btn" aria-label="Close settings">&times;</button>
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label for="apiKeyInput">
-            <strong>Groq API Key</strong>
-            <small>Paste your gsk_... key here</small>
-          </label>
-          <input type="password" id="apiKeyInput" placeholder="gsk_..." />
+          <label for="apiKeyInput"><strong>Groq API Key</strong><small>Paste your gsk_... key here</small></label>
+          <input type="password" id="apiKeyInput" placeholder="gsk_..."/>
         </div>
-       
         <div class="form-group">
-          <label for="suggestionPromptInput">
-            <strong>Suggestion Prompt</strong>
-            <small>Instructions for generating live suggestions</small>
-          </label>
+          <label for="suggestionPromptInput"><strong>Suggestion Prompt</strong><small>Instructions for generating live suggestions</small></label>
           <textarea id="suggestionPromptInput" rows="5"></textarea>
         </div>
-       
         <div class="form-group">
-          <label for="chatPromptInput">
-            <strong>Chat Prompt</strong>
-            <small>Instructions for detailed answers</small>
-          </label>
+          <label for="chatPromptInput"><strong>Chat Prompt</strong><small>Instructions for detailed answers</small></label>
           <textarea id="chatPromptInput" rows="5"></textarea>
         </div>
-       
         <div class="form-row">
           <div class="form-group">
-            <label for="suggestionContextInput">
-              <strong>Context Window (suggestions)</strong>
-              <small>Characters from transcript</small>
-            </label>
-            <input type="number" id="suggestionContextInput" value="500" />
+            <label for="suggestionContextInput"><strong>Context Window (suggestions)</strong><small>Characters from transcript</small></label>
+            <input type="number" id="suggestionContextInput" value="500"/>
           </div>
-         
           <div class="form-group">
-            <label for="chatContextInput">
-              <strong>Context Window (chat)</strong>
-              <small>Characters from transcript</small>
-            </label>
-            <input type="number" id="chatContextInput" value="2000" />
+            <label for="chatContextInput"><strong>Context Window (chat)</strong><small>Characters from transcript</small></label>
+            <input type="number" id="chatContextInput" value="2000"/>
           </div>
         </div>
       </div>
       <div class="modal-footer">
         <button id="saveSettings" class="save-btn">
-          <span class="btn-icon">💾</span>
-          <span>Save Settings</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+            <polyline points="17 21 17 13 7 13 7 21"/>
+            <polyline points="7 3 7 8 15 8"/>
+          </svg>
+          Save Settings
         </button>
       </div>
     </div>
