@@ -29,7 +29,7 @@
 
 ### 🎙️ Smart Transcript (Left Panel)
 - **Live Transcription:** Your speech is converted to text every ~30 seconds using Groq's Whisper model.
-- **Dynamic Status:** Displays `Listening…`, `Recording paused`, or `IDLE` based on microphone state.
+- **Dynamic Status:** Displays `Listening…`, `Recording paused` based on microphone state.
 - **Keyboard Shortcut:** Press `Space` to start or stop recording (when not typing).
 - **Auto-scroll:** New transcript lines automatically appear at the bottom.
 
