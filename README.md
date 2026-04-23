@@ -1,173 +1,170 @@
 # TwinMind — Live Suggestions Web App
 
-## What is this app?
-This is an AI helper for live conversations. It listens to what you say, writes it down as text, and gives you helpful ideas while you are talking. It is built for the TwinMind April 2026 Engineering Assignment.
+> A real-time AI meeting copilot that listens to your voice, transcribes speech, and generates smart, context-aware suggestions to help you stay sharp during conversations. Built for the TwinMind April 2026 Engineering Assignment.
 
-Think of it like having a smart assistant sitting next to you during important conversations, whispering helpful suggestions in your ear.
+🔗 **Live Demo:** [Insert Your Netlify/GitHub Pages URL Here]  
+📂 **GitHub Repo:** [Insert Your Repository URL Here]
 
-## How it works
-The screen has three parts:
+---
 
-### 1. Left Side (Transcript) - "What is being said"
-This is where the app listens to your voice and turns it into text. Every 30 seconds, it adds new text to the list so you can see what was just said.
+## 🚀 What This App Does
 
-**Example:**
-If you say: "We need to finish the design by Friday, but the engineering team needs more time."
+This is an AI helper for live conversations. It listens to what you say, writes it down as text, and gives you helpful ideas while you are talking. Think of it like having a smart assistant sitting next to you during important conversations, whispering useful suggestions in your ear.
 
-The transcript shows:
-- 11:30 AM: We need to finish the design by Friday
-- 11:30:30 AM: but the engineering team needs more time
+The screen is divided into three simple parts:
 
-### 2. Middle Side (Live Suggestions) - "Helpful ideas"
-This is the smart helper. It reads what you said and gives you 3 useful ideas instantly. These could be:
-- A question to ask
-- A talking point to mention
-- A fact to check
-- An answer to give
-- Something to clarify
+### 1. Left Side (Transcript) — "What is being said"
+This is where the app listens to your voice and turns it into text. Every ~30 seconds, it adds new text to the list so you can see what was just said.
+- **Example:** If you say: *"We need to finish the design by Friday, but the engineering team needs more time."*
+- **Transcript shows:** 
+  `11:30:00 AM | We need to finish the design by Friday`  
+  `11:30:30 AM | but the engineering team needs more time`
 
-**Example:**
-If the transcript says: "We need two more engineers, but budget approval is pending."
+### 2. Middle Side (Live Suggestions) — "Helpful ideas"
+This is the smart helper. It reads your recent words and instantly gives you 3 useful ideas. These can be questions, talking points, fact-checks, answers, or clarifications.
+- **Example:** If the transcript says: *"We need two more engineers, but budget approval is pending."*
+- **Suggestions might be:**
+  1. **Question:** "When will the budget be approved?"
+  2. **Talking Point:** "We could start with contractors while waiting"
+  3. **Fact Check:** "Current hiring timeline is 6-8 weeks"
 
-The suggestions might be:
-1. **Question:** "When will the budget be approved?"
-2. **Talking Point:** "We could start with contractors while waiting"
-3. **Fact Check:** "Current hiring timeline is 6-8 weeks"
+### 3. Right Side (Chat) — "Detailed explanations"
+This is for deeper answers. If you click one of the suggestions in the middle, this side explains it fully. You can also type your own questions here. The AI remembers the full conversation so answers stay accurate.
+- **Example:** If you click *"When will the budget be approved?"*
+- **Chat might say:**  
+  *"This is a critical question. Based on the conversation, you should ask: 'Can you confirm the exact date when budget approval is expected?' This helps you plan your hiring timeline and set expectations with stakeholders."*
 
-### 3. Right Side (Chat) - "Detailed explanations"
-This is for deeper answers. If you click one of the suggestions in the middle, this side explains it fully. You can also type your own questions here.
+---
 
-**Example:**
-If you click "When will the budget be approved?"
-
-The chat might say:
-"This is a critical question. Based on the conversation, you should ask: 'Can you confirm the exact date when budget approval is expected?' This helps you plan your hiring timeline and set expectations with stakeholders."
-
-## Real-Life Use Cases
+## 💼 Real-Life Use Cases
 
 ### In Job Interviews
-**Situation:** You're being interviewed and the interviewer asks about your experience.
-
-**What happens:**
-- You speak: "I worked on cloud infrastructure for 3 years"
-- Suggestion appears: "Mention specific technologies like AWS or Azure"
-- You click it → Chat explains: "Add details about AWS EC2, S3, and Lambda to show depth"
-
-**Result:** You give a stronger, more specific answer.
+- **You say:** "I worked on cloud infrastructure for 3 years."
+- **Suggestion:** "Mention specific technologies like AWS or Azure"
+- **Click → Chat:** "Add details about AWS EC2, S3, and Lambda to show depth."
+- **Result:** You give a stronger, more specific answer.
 
 ### In Sales Calls
-**Situation:** A customer says your product is too expensive.
-
-**What happens:**
-- Customer speaks: "Your pricing is higher than competitors"
-- Suggestion appears: "Explain the ROI and long-term savings"
-- You click it → Chat explains: "Show them how your product saves 10 hours/week, which equals $500/month in labor costs"
-
-**Result:** You handle the objection professionally.
+- **Customer says:** "Your pricing is higher than competitors."
+- **Suggestion:** "Explain the ROI and long-term savings"
+- **Click → Chat:** "Show them how your product saves 10 hours/week, which equals $500/month in labor costs."
+- **Result:** You handle the objection professionally.
 
 ### In Team Meetings
-**Situation:** Your team is discussing a project deadline.
-
-**What happens:**
-- Team member says: "We might miss the July launch"
-- Suggestion appears: "Ask what's blocking progress"
-- You click it → Chat explains: "Ask: 'What specific tasks are behind schedule?' to identify the root cause"
-
-**Result:** You lead the conversation toward solutions.
+- **Teammate says:** "We might miss the July launch."
+- **Suggestion:** "Ask what's blocking progress"
+- **Click → Chat:** "Ask: 'What specific tasks are behind schedule?' to identify the root cause."
+- **Result:** You lead the conversation toward solutions.
 
 ### In Brainstorming Sessions
-**Situation:** Your team is generating ideas for a new feature.
+- **Someone says:** "We could add a dark mode."
+- **Suggestion:** "Suggest checking user analytics first"
+- **Click → Chat:** "Before building, check if users are requesting this in support tickets."
+- **Result:** You make data-driven decisions.
 
-**What happens:**
-- Someone says: "We could add a dark mode"
-- Suggestion appears: "Suggest checking user analytics first"
-- You click it → Chat explains: "Before building, check if users are requesting this in support tickets"
+---
 
-**Result:** You make data-driven decisions.
+## ⚡ Quick Start
 
-## How to use it
-1. Open the website in your browser.
-2. Click the "Settings" button and paste your Groq API Key.
-3. Click the "Start" button (microphone icon) and let the app listen to your microphone.
-4. Talk normally. You will see your words appear on the left, and helpful ideas appear in the middle.
-5. Click an idea to get a detailed answer on the right.
-6. When you are done, click "Export" to save your conversation.
+### For Users
+1. Open the app in your browser.
+2. Click ⚙️ **Settings** and paste your Groq API Key (starts with `gsk_`).
+3. Click the 🔴 **Start** button or press `Space` to begin recording.
+4. Talk normally. Your words appear on the left, and 3 smart ideas appear in the middle every 30 seconds.
+5. Click any idea to see a detailed answer on the right.
+6. Click 📤 **Export** to save your full session as a JSON file.
 
-## Technology Used
-- **Frontend:** HTML, CSS, and JavaScript (no complex frameworks).
-- **AI Provider:** Groq.
-- **Models:**
-  - **Transcription:** Whisper Large V3 (turns speech into text).
-  - **Suggestions & Chat:** GPT-OSS 120B (thinks and gives answers).
+### For Developers
+```bash
+# 1. Clone the repository
+git clone [Your-Repo-URL]
 
-## How I built it (Prompt Strategy)
+# 2. Open index.html in your browser
+# 3. Enter your Groq API Key in the Settings panel
+# 4. No build step or installation required!
+✨ Key Features
+🎙️ Live Transcription: Converts speech to text every ~30 seconds using Groq's Whisper model
+💡 Smart Suggestions: Exactly 3 context-aware ideas per batch (Questions, Talking Points, Answers, Fact-Checks, Clarifications)
+💬 Interactive Chat: Click suggestions for detailed answers or ask your own questions
+⌨️ Keyboard Shortcut: Press Space to start/stop recording (when not typing)
+🌓 Theme Toggle: Switch between Dark and Light modes instantly
+📤 Session Export: Download transcript + suggestions + chat as a structured JSON file
+🔒 Privacy-First: Everything runs in your browser. No backend server, no data stored externally
 
-### 1. Live Suggestions
-**What I did:**
-- I told the AI to look at only the last 500 characters (about 3-5 minutes of conversation).
-- I asked it to give exactly 3 ideas that are short and useful.
-- I made sure it only gives back a clean list of ideas (JSON format) so the app doesn't crash.
+🛠️ Tech Stack
+| Layer           | Technology                        | Why?                                                              |
+| --------------- | --------------------------------- | ----------------------------------------------------------------- |
+| Frontend        | HTML5, CSS3, Vanilla JavaScript   | Lightweight, no build steps, easy to read and maintain            |
+| Audio Capture   | Web Audio API + MediaRecorder     | Native browser support for real-time microphone access            |
+| Speech-to-Text  | Groq whisper-large-v3             | Fast, accurate transcription with simple REST API                 |
+| AI Reasoning    | Groq openai/gpt-oss-120b          | High-quality reasoning model with strong context understanding    |
+| Styling         | CSS Custom Properties (Variables) | Enables instant light/dark theming with zero JavaScript logic     |
+| State & Storage | JavaScript Objects + localStorage | Simple, transparent data management. API key stays on your device |
 
-**Why:**
-- Too much context confuses the AI and makes it slow.
-- Three suggestions is enough to be helpful without overwhelming you.
-- Clean formatting means the app works reliably.
 
-### 2. Detailed Chat
-**What I did:**
-- When you click an idea, I send the last 2000 characters of conversation history.
-- This helps the AI remember what was said earlier.
-- I use a "reasoning model" that thinks deeply before answering.
+🧠 Prompt Engineering Strategy
 
-**Why:**
-- Detailed answers need more context to be accurate.
-- The reasoning model gives better, more thoughtful responses.
+To ensure the app provides reliable, useful results, the prompts are designed carefully to manage context and enforce clean outputs.
 
-### 3. Decisions I made
+1. Live Suggestions (Middle Panel)
+Focused Context: Only the last 500 characters of the transcript are used. This keeps responses relevant and fast.
+Strict Output: JSON-only responses are enforced. No markdown or extra text, which keeps parsing stable.
+Intent-Aware: The AI analyzes why something was said and mixes suggestion types naturally.
+2. Detailed Chat (Right Panel)
+Deep Memory: Uses up to 2000 characters of context for better follow-up answers.
+Reasoning Model Handling: The model produces hidden thinking tags. A custom parser removes them and shows only the final clean response.
 
-**No Backend Server**
-- I built this to run entirely in your browser.
-- This makes it fast and simple.
-- Your API key stays on your computer (not sent to any server).
+⚖️ Design Decisions & Tradeoffs
 
-**30-Second Chunks**
-- The app listens for 30 seconds, writes the text, then starts again.
-- This keeps the suggestions fresh and relevant.
-- It matches how real conversations flow.
+| Decision                 | Why It Was Chosen                                                    |
+| ------------------------ | -------------------------------------------------------------------- |
+| No Backend Server        | Runs fully in the browser, reducing latency and keeping data private |
+| 30-Second Audio Chunks   | Balanced between responsiveness and API efficiency                   |
+| Vanilla JavaScript       | No frameworks, easier to review, zero setup                          |
+| LocalStorage for API Key | Simple and user-controlled without backend complexity                |
+| Fixed 3 Suggestions      | Predictable UI and easier testing                                    |
 
-**Export Feature**
-- The app saves everything: what was said, the ideas given, and the chat answers.
-- Each item has a timestamp so you can review exactly when things happened.
-- This helps you prepare for follow-up meetings or interviews.
+📁 Project Structure
 
-## Files in this project
-- `index.html`: The structure of the page (the skeleton).
-- `style.css`: The design and colors (the clothes).
-- `app.js`: The logic that makes the AI work (the brain).
-- `README.md`: This file (the instruction manual).
+twinmind-live-suggestions/
+├── index.html        # Main UI structure and layout
+├── style.css         # All styling, themes, and animations
+├── app.js            # Core logic (audio capture, API calls, UI updates)
+└── README.md         # This instruction manual
 
-## What makes this different
-Most AI tools wait until after the meeting to give you notes. This app helps you **during** the conversation. It's like having a coach in your ear telling you:
-- "Ask this question now"
-- "Don't forget to mention that"
-- "That fact might be wrong"
-- "Here's how to answer"
+🎯 What Makes This Different
 
-This real-time help is what makes TwinMind special.
+Most AI tools help after a meeting. This one helps during the conversation.
 
-## Example Session
-Here's what a real session might look like:
+It acts like a real-time coach, nudging you with:
 
-**11:30 AM** - You start the mic and begin your interview.
+Ask this question now
+Mention this detail
+Double-check that fact
+Try this response
 
-**11:30:30 AM** - You say: "I have experience with machine learning."
-- **Suggestion appears:** "Give a specific project example"
-- **You click it** → Chat says: "Mention the customer churn prediction model you built that improved accuracy by 15%"
+That live feedback is what makes TwinMind stand out.
 
-**11:31:00 AM** - Interviewer asks: "What's your biggest weakness?"
-- **Suggestion appears:** "Use the 'area of improvement' framework"
-- **You click it** → Chat says: "Say: 'I used to struggle with public speaking, so I joined Toastmasters and now lead weekly team presentations'"
+📝 Example Session
+11:30:00 AM — You start the mic and begin your interview
+11:30:30 AM — You say: "I have experience with machine learning."
+→ Suggestion: "Give a specific project example"
+→ Chat: "Mention the customer churn prediction model you built that improved accuracy by 15%"
+11:31:00 AM — Interviewer asks: "What's your biggest weakness?"
+→ Suggestion: "Use the 'area of improvement' framework"
+→ Chat: "Say: 'I used to struggle with public speaking, so I joined Toastmasters and now lead weekly team presentations'"
+11:31:30 AM — You export the session for later review
 
-**11:31:30 AM** - You export the session and review all the suggestions you used.
+This is what real-time AI assistance looks like.
 
-This is the power of live AI assistance.
+✅ Deliverables Checklist
+Public Deployed URL (Netlify or GitHub Pages)
+Public GitHub Repository with clean commit history
+Clear README (setup, tech stack, prompts, tradeoffs)
+Clean and readable code
+Fully working real-time system
+Exportable session data (JSON with timestamps)
+
+Note: No login required. Just paste your API key and start speaking.
+
+Built with ❤️ using Groq API. Simple, fast, and private.
