@@ -3,47 +3,69 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TwinMind — Live Suggestions</title>
+  <title>TwinMind - Live Suggestions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
-  <!-- TOP BAR -->
   <header class="top-bar">
     <div class="top-bar-left">
-      <span class="app-logo">
-        <span class="tm-t">T</span><span class="tm-w">w</span><span class="tm-i">i</span><span class="tm-n">n</span><span class="tm-m">M</span><span class="tm-i">i</span><span class="tm-n">n</span><span class="tm-d">d</span>
-        <span class="logo-dash"> — </span>
-        <span class="app-logo-sub">Live Suggestions Web App (Reference Mockup)</span>
-      </span>
+      <a class="app-logo" href="#" aria-label="TwinMind home">
+        <span class="logo-word">Tw<span>i</span>nM<span>i</span>nd</span>
+      </a>
+      <span class="app-logo-sub">Live meeting copilot</span>
+    </div>
+
+    <div class="top-metrics" aria-label="Session metrics">
+      <span class="metric-pill" id="sessionState">Ready</span>
+      <span class="metric-pill mono" id="sessionTimer">00:00</span>
+      <span class="metric-pill" id="wordCount">0 words</span>
+      <span class="metric-pill" id="savedMetric">0 saved</span>
     </div>
 
     <div class="top-bar-right">
-      <div class="theme-toggle-group">
-        <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
-          <svg class="sun-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"/>
-            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </svg>
-          <svg class="moon-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-        </button>
-        <button class="icon-btn" id="settingsBtn" title="Settings" aria-label="Open settings">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
-          </svg>
-        </button>
-      </div>
-
-      <button id="exportBtn" class="top-action-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+      <button id="demoBtn" class="top-action-btn" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+        Demo
+      </button>
+      <button id="clearBtn" class="icon-btn" type="button" title="Clear session" aria-label="Clear session">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 6h18"/>
+          <path d="M8 6V4h8v2"/>
+          <path d="M19 6l-1 14H6L5 6"/>
+          <path d="M10 11v5"/>
+          <path d="M14 11v5"/>
+        </svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" title="Toggle theme" aria-label="Toggle theme">
+        <svg class="sun-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg class="moon-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <button class="icon-btn" id="settingsBtn" type="button" title="Settings" aria-label="Open settings">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+      <button id="exportBtn" class="top-action-btn" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
           <polyline points="7 10 12 15 17 10"/>
           <line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
@@ -52,154 +74,224 @@
     </div>
   </header>
 
-  <!-- MAIN 3-COLUMN GRID -->
   <main class="app-grid">
-
-    <!-- COLUMN 1: MIC & TRANSCRIPT -->
-    <section class="col" id="col-transcript">
+    <section class="col" id="col-transcript" aria-labelledby="transcriptTitle">
       <div class="col-header">
         <div class="col-header-left">
-          <span class="col-num">1.</span>
-          <span class="col-title">MIC &amp; TRANSCRIPT</span>
+          <span class="col-num">1</span>
+          <h1 class="col-title" id="transcriptTitle">Mic and transcript</h1>
         </div>
-        <span class="col-badge" id="micStatus">IDLE</span>
+        <span class="col-badge" id="micStatus">Idle</span>
       </div>
+
       <div class="col-body">
         <div class="mic-zone">
-          <button id="micBtn" class="mic-circle" aria-label="Toggle microphone recording">
-            <span class="mic-dot"></span>
+          <button id="micBtn" class="mic-circle" type="button" aria-label="Toggle microphone recording">
+            <span class="mic-dot" aria-hidden="true"></span>
           </button>
-          <p class="mic-hint">Click mic to start. Transcript<br>appends every ~30s.</p>
+          <div class="mic-copy">
+            <strong>Start listening</strong>
+            <span>Capture audio in short chunks, then turn it into transcript and suggestions.</span>
+          </div>
         </div>
-        <div class="info-panel">
-          Live transcript of your conversation appear here, updated every ~30 seconds while
-          recording. Use Start/Stop or <kbd>Space</kbd> to control recording. Export the full session anytime.
+
+        <div class="guidance-panel">
+          <strong>What this panel does</strong>
+          <p>TwinMind listens while you talk and turns the conversation into a clean, searchable transcript. New lines are added about every 30 seconds, so you can stay focused on the meeting instead of writing notes.</p>
         </div>
-        <div id="transcript" class="scroll-area" role="log" aria-live="polite" aria-label="Live transcript">
-          <p class="placeholder-transcript" id="transcriptPlaceholder">
-            <span class="ph-idle">No transcript yet — start the mic.</span>
-            <span class="ph-listening">
+
+        <div class="session-summary" aria-label="Transcript summary">
+          <div>
+            <span id="transcriptCount">0</span>
+            <small>chunks</small>
+          </div>
+          <div>
+            <span id="activeDuration">00:00</span>
+            <small>active</small>
+          </div>
+          <div>
+            <span id="lastUpdate">Never</span>
+            <small>last update</small>
+          </div>
+        </div>
+
+        <div class="panel-actions">
+          <label class="search-field" for="transcriptSearch">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input id="transcriptSearch" type="search" placeholder="Search transcript" autocomplete="off"/>
+          </label>
+          <button id="copyTranscriptBtn" class="small-action-btn" type="button">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            Copy
+          </button>
+        </div>
+
+        <div id="transcript" class="scroll-area transcript-scroll" role="log" aria-live="polite" aria-label="Live transcript">
+          <div class="empty-state" id="transcriptPlaceholder">
+            <span class="empty-title">No transcript yet</span>
+            <span class="empty-text">Press Space or click the mic to begin. Use Demo to explore the interface without a key.</span>
+            <span class="listening-state">
               <span class="l-dot"></span><span class="l-dot"></span><span class="l-dot"></span>
-              Listening...
+              Listening
             </span>
-          </p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- COLUMN 2: LIVE SUGGESTIONS -->
-    <section class="col" id="col-suggestions">
+    <section class="col" id="col-suggestions" aria-labelledby="suggestionsTitle">
       <div class="col-header">
         <div class="col-header-left">
-          <span class="col-num">2.</span>
-          <span class="col-title">LIVE SUGGESTIONS</span>
+          <span class="col-num">2</span>
+          <h1 class="col-title" id="suggestionsTitle">Live suggestions</h1>
         </div>
-        <span class="col-badge" id="batchCount">0 BATCHES</span>
+        <span class="col-badge" id="batchCount">0 batches</span>
       </div>
+
       <div class="col-body">
         <div class="suggestions-toolbar">
-          <button id="refreshBtn" class="reload-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <button id="refreshBtn" class="reload-btn" type="button">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polyline points="1 4 1 10 7 10"/>
-              <path d="M3.51 15a9 9 0 102.13-9.36L1 10"/>
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
             </svg>
-            Reload suggestions
+            Refresh
           </button>
-          <span class="auto-refresh-label">auto-refresh in <span id="refreshCountdown">30</span>s</span>
+          <span class="auto-refresh-label">next capture <span id="refreshCountdown">--</span></span>
         </div>
-        <div class="info-panel">
-          AI-generated suggestions based on your conversation appear here, refreshed every ~30 seconds.
-          Each batch includes 3 items such as
-          <span class="il-tag q">questions</span>,
-          <span class="il-tag t">talking points</span>,
-          <span class="il-tag a">answers</span>, or
-          <span class="il-tag f">fact-checks</span>,
-          often in combination. New suggestions appear at the top. Click any to explore further.
+
+        <div class="guidance-panel">
+          <strong>Why suggestions appear here</strong>
+          <p>TwinMind reads the latest transcript and creates helpful next moves: <span class="inline-type type-question">questions</span> to ask, <span class="inline-type type-talking">talking points</span> to mention, <span class="inline-type type-answer">answers</span> to use, and <span class="inline-type type-fact">fact-checks</span> to verify. New suggestions are generated automatically after each capture.</p>
         </div>
+
+        <div class="segmented-control" id="suggestionFilters" aria-label="Filter suggestions">
+          <button class="active" type="button" data-filter="all">All</button>
+          <button type="button" data-filter="QUESTION">Questions</button>
+          <button type="button" data-filter="ANSWER">Answers</button>
+          <button type="button" data-filter="FACT_CHECK">Facts</button>
+          <button type="button" data-filter="TALKING_POINT">Talking points</button>
+          <button type="button" data-filter="saved">Saved</button>
+        </div>
+
+        <div class="suggestion-insights">
+          <span id="activeFilterLabel">Showing all suggestions</span>
+          <span id="savedCount">0 saved</span>
+        </div>
+
         <div id="suggestions" class="scroll-area suggestions-scroll" role="feed" aria-label="Live suggestions">
-          <p class="placeholder-text italic">Suggestions appear here once recording starts.</p>
+          <div class="empty-state">
+            <span class="empty-title">Suggestions will appear here</span>
+            <span class="empty-text">Start recording, refresh manually, or load a demo session.</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- COLUMN 3: CHAT -->
-    <section class="col" id="col-chat">
+    <section class="col" id="col-chat" aria-labelledby="chatTitle">
       <div class="col-header">
         <div class="col-header-left">
-          <span class="col-num">3.</span>
-          <span class="col-title">CHAT (DETAILED ANSWERS)</span>
+          <span class="col-num">3</span>
+          <h1 class="col-title" id="chatTitle">Detailed answers</h1>
         </div>
-        <span class="col-badge session">SESSION-ONLY</span>
+        <span class="col-badge session">Session only</span>
       </div>
+
       <div class="col-body chat-col-body">
-        <!-- UPDATED: Wrapped in info-panel for the box outline -->
-        <div class="info-panel">
-          Detailed responses appear here. Click a suggestion to expand it with full context, or type your own questions. The chat maintains context throughout your session for easy follow-ups.
+        <div class="guidance-panel chat-guidance">
+          <strong>How to use chat</strong>
+          <p>Click Ask on any suggestion to get a detailed answer, or type your own question. The assistant uses the current transcript as context, so it can summarize the meeting, find decisions, list risks, and draft follow-up actions.</p>
         </div>
-        
+
+        <div class="quick-prompts" aria-label="Quick prompts">
+          <button type="button" data-prompt="Summarize the latest discussion in concise notes.">Summarize</button>
+          <button type="button" data-prompt="Extract decisions, risks, and open questions from the transcript.">Decisions</button>
+          <button type="button" data-prompt="Draft follow-up actions with owners and timing where possible.">Follow-ups</button>
+        </div>
+
         <div id="chat" class="scroll-area chat-area" role="log" aria-live="polite" aria-label="Chat history">
-          <p class="placeholder-text italic centered">Click a suggestion or type a question below.</p>
+          <div class="empty-state compact">
+            <span class="empty-title">No chat yet</span>
+            <span class="empty-text">Click Ask on a suggestion or type a question below.</span>
+          </div>
         </div>
-        
+
         <div class="chat-input-bar">
-          <input type="text" id="chatInput" placeholder="Ask anything..." autocomplete="off" aria-label="Chat input"/>
-          <button id="sendBtn" class="send-btn">Send</button>
+          <input type="text" id="chatInput" placeholder="Ask anything about this session" autocomplete="off" aria-label="Chat input"/>
+          <button id="sendBtn" class="send-btn" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m22 2-7 20-4-9-9-4Z"/>
+              <path d="M22 2 11 13"/>
+            </svg>
+            Send
+          </button>
         </div>
       </div>
     </section>
-
   </main>
 
-  <!-- SETTINGS MODAL -->
-  <div id="settingsModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Settings">
-    <div class="modal-overlay"></div>
+  <div id="settingsModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="modal-overlay" data-close-modal></div>
     <div class="modal-content">
       <div class="modal-header">
         <div class="modal-title-row">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="3"/>
-            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
           </svg>
-          <h2>Settings</h2>
+          <h2 id="settingsTitle">Settings</h2>
         </div>
-        <button id="closeSettings" class="close-btn" aria-label="Close settings">&times;</button>
+        <button id="closeSettings" class="close-btn" type="button" aria-label="Close settings">&times;</button>
       </div>
+
       <div class="modal-body">
         <div class="form-group">
-          <label for="apiKeyInput"><strong>Groq API Key</strong><small>Paste your gsk_... key here</small></label>
-          <input type="password" id="apiKeyInput" placeholder="gsk_..."/>
+          <label for="apiKeyInput"><strong>Groq API key</strong><small>Defaults are already configured. Add your key and start recording.</small></label>
+          <input type="password" id="apiKeyInput" placeholder="gsk_..." autocomplete="off"/>
         </div>
+
         <div class="form-group">
-          <label for="suggestionPromptInput"><strong>Suggestion Prompt</strong><small>Instructions for generating live suggestions</small></label>
+          <label for="suggestionPromptInput"><strong>Suggestion prompt</strong><small>Controls the three live suggestion cards.</small></label>
           <textarea id="suggestionPromptInput" rows="5"></textarea>
         </div>
+
         <div class="form-group">
-          <label for="chatPromptInput"><strong>Chat Prompt</strong><small>Instructions for detailed answers</small></label>
+          <label for="chatPromptInput"><strong>Chat prompt</strong><small>Controls longer answers in the right panel.</small></label>
           <textarea id="chatPromptInput" rows="5"></textarea>
         </div>
+
         <div class="form-row">
           <div class="form-group">
-            <label for="suggestionContextInput"><strong>Context Window (suggestions)</strong><small>Characters from transcript</small></label>
-            <input type="number" id="suggestionContextInput" value="500"/>
+            <label for="suggestionContextInput"><strong>Suggestion context</strong><small>Recent transcript characters.</small></label>
+            <input type="number" id="suggestionContextInput" min="100" max="5000" step="100" value="500"/>
           </div>
           <div class="form-group">
-            <label for="chatContextInput"><strong>Context Window (chat)</strong><small>Characters from transcript</small></label>
-            <input type="number" id="chatContextInput" value="2000"/>
+            <label for="chatContextInput"><strong>Chat context</strong><small>Transcript characters for chat.</small></label>
+            <input type="number" id="chatContextInput" min="500" max="12000" step="500" value="2000"/>
           </div>
         </div>
       </div>
+
       <div class="modal-footer">
-        <button id="saveSettings" class="save-btn">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+        <button id="saveSettings" class="save-btn" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
             <polyline points="17 21 17 13 7 13 7 21"/>
             <polyline points="7 3 7 8 15 8"/>
           </svg>
-          Save Settings
+          Save settings
         </button>
       </div>
     </div>
   </div>
+
+  <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
 
   <script src="app.js"></script>
 </body>
