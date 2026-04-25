@@ -1,167 +1,186 @@
 # TwinMind - Live Suggestions Web App
 
-TwinMind is a real-time AI meeting copilot. It listens to a live conversation, turns speech into a transcript, generates useful suggestions, and lets the user ask follow-up questions with the meeting context.
+TwinMind is a real-time AI meeting copilot.  
+It listens to live conversation, converts speech to transcript, shows useful suggestions during the call, and gives detailed answers in chat.
 
-This project is built as a simple browser app using HTML, CSS, and vanilla JavaScript. It does not need a backend, database, or build step.
+This project was built for the **TwinMind Live Suggestions Assignment (April 2026)**.
 
 Live demo: https://twinmindlivesuggestions.netlify.app/  
 GitHub repo: https://github.com/SaiManoj-Prompts/TwinMind-live-suggestions
 
-## What It Does
+## Overview
 
-TwinMind helps users stay focused during meetings instead of manually taking notes.
+The app follows the required 3-column layout:
 
-The app has three main panels:
+1. **Mic and Transcript (left)**: start/stop mic, transcript chunks, auto-scroll.
+2. **Live Suggestions (middle)**: 3 fresh suggestions per cycle, manual refresh, older batches kept below.
+3. **Detailed Answers (right)**: click suggestion for expanded answer, or ask your own question.
 
-| Panel | Purpose |
+Main goal: show the right suggestion at the right time while a conversation is happening.
+
+## Requirements Coverage
+
+### Functional requirements
+
+| Requirement | Status |
 | --- | --- |
-| Mic and Transcript | Records short audio chunks and converts speech into searchable transcript text. |
-| Live Suggestions | Generates helpful suggestions from the latest conversation context every capture cycle. |
-| Detailed Answers | Lets the user ask questions, expand suggestions, summarize the meeting, and create follow-ups. |
+| Start/stop mic | Implemented |
+| Transcript updates in chunks around every 30 seconds | Implemented |
+| Transcript auto-scroll to latest line | Implemented |
+| Suggestions auto-refresh around every 30 seconds | Implemented |
+| Manual refresh button | Implemented |
+| Exactly 3 suggestions per batch | Implemented |
+| New batch at top, older batches below | Implemented |
+| Tappable suggestion cards with useful preview | Implemented |
+| Click suggestion -> detailed answer in chat | Implemented |
+| User can type direct questions in chat | Implemented |
+| One continuous chat per session (no login) | Implemented |
+| Export transcript + all suggestion batches + chat history | Implemented (JSON) |
 
-## Main Features
+### Technical requirements
 
-- Live microphone recording from the browser.
-- Speech-to-text transcription using Groq `whisper-large-v3`.
-- Automatic suggestion generation after each capture interval, default 30 seconds.
-- Suggestions can include questions, answers, talking points, and fact checks.
-- Fallback suggestion handling so the UI still provides useful cards if the AI returns an unexpected format.
-- Click a suggestion to ask the chat for a detailed answer.
-- Quick prompts for summaries, decisions, and follow-up actions.
-- Transcript search and copy.
-- Save useful suggestions for later.
-- Filter suggestions by type.
-- Export the full session as JSON.
-- Demo mode to explore the app without an API key.
-- Light and dark themes.
-- Settings for API key, model name, prompts, capture interval, and context windows.
+| Requirement | Status |
+| --- | --- |
+| Transcription model: Groq Whisper Large V3 | Implemented (`whisper-large-v3`) |
+| Suggestions/chat model: Groq GPT-OSS 120B | Implemented (`openai/gpt-oss-120b`) |
+| User-pasted Groq API key in Settings | Implemented |
+| Hardcoded default prompts and parameters, editable in UI | Implemented |
+| Public URL and public/shared code repo | Included above |
 
-## How To Use
+## Quick Start
 
-1. Open the live demo or run the app locally.
-2. Click the Settings button.
-3. Paste a Groq API key that starts with `gsk_`.
-4. Click Save settings.
-5. Click the mic button or press Space to start recording.
-6. Speak naturally during the meeting.
-7. Watch transcript lines appear in the left panel.
-8. Review AI suggestions in the middle panel.
-9. Click Ask on a suggestion, or type your own question in the chat panel.
-10. Export the session when finished.
-
-You can also click Demo to load sample data without using an API key.
-
-## Running Locally
-
-Microphone access works best on `localhost` or HTTPS. Use the included local server:
+1. Run the local server:
 
 ```bash
 node server.js 8080
 ```
 
-Then open:
+2. Open:
 
 ```text
 http://127.0.0.1:8080
 ```
 
+3. Open **Settings** and paste your Groq API key (`gsk_...`).
+4. Save settings.
+5. Click the mic button (or press `Space`) to start.
+
 No `npm install` is required.
+
+## How a User Uses It
+
+1. Start recording from the left panel.
+2. Speak naturally; transcript lines appear in chunks with timestamps.
+3. Watch the middle panel for live suggestion cards.
+4. Use those suggestions directly in the conversation.
+5. Click **Ask** on any card for a detailed answer in the right panel.
+6. Use quick prompts (`Summarize`, `Decisions`, `Follow-ups`) when needed.
+7. Save useful suggestions and export the session at the end.
+
+## Feature Highlights
+
+- Real-time transcript from browser mic input.
+- Automatic suggestion batches every capture cycle (default 30s).
+- Suggestion categories:
+  - `QUESTION`
+  - `ANSWER`
+  - `FACT_CHECK`
+  - `TALKING_POINT`
+- Fallback logic if model output is malformed or not usable.
+- Transcript search and copy.
+- Suggestion save/filter workflow.
+- Session export to JSON.
+- Demo mode for trying the app without an API key.
+
+## Prompt Strategy
+
+### Live suggestion prompt
+
+The default suggestion prompt is tuned for:
+
+- Strict JSON output only.
+- Exactly 3 short and actionable suggestions.
+- Strong focus on recent transcript context.
+- Better meeting usefulness (decisions, blockers, risks, next actions).
+
+Clarification intent is folded into `QUESTION` to reduce overlap and keep the suggestions sharper.
+
+### Detailed chat prompt
+
+The default chat prompt is tuned for:
+
+- Direct answer in the first sentence.
+- Practical, transcript-grounded explanation.
+- No fabricated facts.
+- Clear next steps when obvious.
+- 3-5 sentence response length.
+
+## Settings
+
+Users can edit:
+
+- Groq API key
+- Live suggestion prompt
+- Chat prompt
+- Suggestion context window
+- Chat context window
+
+The app ships with strong defaults, so a new user usually only needs to paste the API key and start.
+
+## Stack Choices
+
+| Layer | Choice | Reason |
+| --- | --- | --- |
+| Frontend | HTML, CSS, Vanilla JavaScript | Lightweight, readable, no build step |
+| Audio capture | Browser MediaRecorder API | Native browser support |
+| Speech-to-text | Groq Whisper Large V3 | Assignment model requirement |
+| Suggestions/chat | Groq GPT-OSS 120B | Assignment model requirement |
+| Local persistence | `localStorage` | Stores key, prompts, theme, settings |
+| Local server | `server.js` | Simple localhost serving without extra tools |
+
+## Export Format
+
+Export includes:
+
+- Export time
+- Session metrics
+- Transcript entries (with timestamps)
+- Suggestion batches (with timestamps)
+- Full chat history
+- Active settings snapshot
+
+## Tradeoffs
+
+1. No database:
+Session data is in memory for assignment speed and simplicity.
+
+2. API key in browser storage:
+Good for reviewer setup speed, not ideal for enterprise production security.
+
+3. Fixed model choices:
+Keeps evaluation focused on prompt quality and implementation quality.
+
+4. Local static architecture:
+Very easy to run and review, but not designed as a production multi-user backend.
 
 ## Project Structure
 
 ```text
 twinmind-app/
-|-- index.html   # Page structure and app layout
-|-- style.css    # UI styling, themes, responsive layout
-|-- app.js       # Recording, Groq API calls, suggestions, chat, export
-|-- server.js    # Small local static server
-`-- README.md    # Project documentation
+|-- index.html   # Main app layout and settings modal
+|-- style.css    # Theme and UI styling
+|-- app.js       # Mic capture, API calls, suggestions, chat, export
+|-- server.js    # Local static server
+`-- README.md
 ```
 
-## Tech Stack
-
-| Layer | Technology | Why It Was Used |
-| --- | --- | --- |
-| Frontend | HTML, CSS, JavaScript | Simple, fast, and easy to review. |
-| Audio capture | Browser MediaRecorder API | Native microphone recording in modern browsers. |
-| Transcription | Groq Whisper Large V3 | Fast speech-to-text for recorded audio chunks. |
-| Suggestions and chat | Groq OpenAI-compatible chat API | Generates context-aware suggestions and detailed answers. |
-| Storage | localStorage | Saves settings and theme in the browser. |
-| Server | Small Node static server | Used only for local development and microphone-safe localhost access. |
-
-## How The App Works
-
-1. The browser records audio in short chunks.
-2. Each audio chunk is sent to Groq Whisper for transcription.
-3. The new transcript text is added to the transcript panel.
-4. The latest transcript context is sent to the chat model.
-5. The model returns suggestions for the current conversation.
-6. The user can save, copy, filter, or expand suggestions.
-7. The chat panel uses the transcript as context for detailed answers.
-
-## Prompt Strategy
-
-The suggestion prompt asks the model to return exactly three useful items in JSON format. The app supports four suggestion types:
-
-| Type | Meaning |
-| --- | --- |
-| `QUESTION` | A question the user may want to ask next. |
-| `ANSWER` | A direct answer to something raised in the conversation. |
-| `TALKING_POINT` | A useful point to mention or expand on. |
-| `FACT_CHECK` | A claim, number, date, or assumption worth verifying. |
-
-The app also includes tolerant parsing. If the AI returns fields like `text`, `suggestion`, `question`, or `answer` instead of `content`, TwinMind still turns them into suggestion cards.
-
-If the AI response is unusable, the app creates fallback suggestions from the latest transcript instead of leaving the user stuck.
-
-## Settings
-
-Users can change:
-
-- Groq API key.
-- Suggestion prompt.
-- Chat prompt.
-- Suggestion context length.
-- Chat context length.
-- Theme preference.
-
-The API key and settings are stored in the browser's `localStorage`.
-
-## Export
-
-The Export button downloads a JSON file with:
-
-- Export time.
-- Session duration.
-- Word count.
-- Transcript lines.
-- Suggestion batches.
-- Saved suggestions.
-- Chat history.
-- Main settings used during the session.
-
-## Design Notes
-
-- The layout uses three clear columns so the user can see transcript, suggestions, and chat at the same time.
-- Each panel includes short helper text so first-time users understand what the app is doing.
-- The UI is dense enough for real meeting use, but still simple enough for a recruiter or reviewer to understand quickly.
-- Demo mode makes the project easy to evaluate even without a Groq API key.
-
-## Current Limitations
-
-- The app stores session data in memory, so refreshing the page clears the active session.
-- The Groq API key is stored in browser `localStorage`, which is convenient for a demo but not ideal for a production enterprise app.
-- Audio quality depends on the user's microphone and browser permissions.
-- The app does not use a database or user accounts.
-
-## Recruiter Notes
+## Key Takeaways
 
 This project demonstrates:
 
-- Browser audio capture.
-- Real-time AI workflow design.
-- Prompt engineering for structured output.
-- Defensive parsing for imperfect model responses.
-- Practical UI/UX design for a meeting assistant.
-- Vanilla JavaScript state management.
-- Clean export and demo flows for easier review.
+- Prompt engineering for live, context-sensitive suggestion quality.
+- Real-time browser audio capture and chunking.
+- Practical LLM integration with strict output handling.
+- Defensive parsing and graceful fallback behavior.
+- Clear, usable UI focused on meeting workflow.
+- Clean, easy-to-review JavaScript structure without framework overhead.
